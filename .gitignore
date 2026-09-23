@@ -5,6 +5,5 @@ __pycache__/
 .env
 .vscode/
 .terraform/
-.terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
