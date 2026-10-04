@@ -1,3 +1,7 @@
+resource "aws_cloudwatch_log_group" "ecs" {
+  name              = "/ecs/ads-platform"
+  retention_in_days = 7
+}
 resource "aws_ecs_cluster" "main" {
   name = "ads-platform-cluster"
 }
@@ -33,7 +37,14 @@ resource "aws_ecs_task_definition" "app" {
           hostPort      = 8000
         }
       ]
-
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs.name
+          "awslogs-region"        = "us-west-2"
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
       environment = [
         {
           name  = "APP_ENV"

@@ -7,6 +7,11 @@ resource "aws_ecs_service" "app" {
 
   launch_type = "FARGATE"
 
+  lifecycle {
+    ignore_changes = [
+      task_definition
+    ]
+  }
   # Define the deployment circuit breaker behavior here
   deployment_circuit_breaker {
     enable   = true
