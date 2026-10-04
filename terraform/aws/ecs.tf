@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "app" {
   # Previously omitted — causing the ARM64-only image to be rejected.
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "X86_64"   # X86_64 = linux/amd64
+    cpu_architecture        = "X86_64" # X86_64 = linux/amd64
   }
 
   container_definitions = jsonencode([
@@ -46,6 +46,10 @@ resource "aws_ecs_task_definition" "app" {
         {
           name  = "APP_PORT"
           value = "8000"
+        },
+        {
+          name  = "DATABASE_URL"
+          value = "postgresql://ads_user:${var.db_password}@${aws_db_instance.postgres.address}:5432/ads_platform"
         }
       ]
     }
