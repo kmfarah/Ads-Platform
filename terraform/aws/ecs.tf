@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = jsonencode([
     {
       name  = "ads-platform"
-      image = "442042537896.dkr.ecr.us-west-2.amazonaws.com/ads-platform:latest"
+      image = "442042537896.dkr.ecr.us-west-2.amazonaws.com/ads-platform:6d7d37a075574e7803af00b4bdc524cfb5190d0c"
 
       essential = true
 
