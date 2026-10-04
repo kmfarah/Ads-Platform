@@ -3,7 +3,7 @@ resource "aws_subnet" "private_a" {
 
   cidr_block = "10.0.11.0/24"
 
-  availability_zone = "us-west2a"
+  availability_zone = "us-west-2a"
 
   tags = {
     Name = "ads-platform-private-a"
@@ -15,7 +15,7 @@ resource "aws_subnet" "private_b" {
 
   cidr_block = "10.0.12.0/24"
 
-  availability_zone = "us-west2b"
+  availability_zone = "us-west-2b"
 
   tags = {
     Name = "ads-platform-private-b"
@@ -31,6 +31,33 @@ resource "aws_db_subnet_group" "main" {
 
   tags = {
     Name = "ads-platform-db-subnet-group"
+  }
+}
+resource "aws_security_group" "rds" {
+  name        = "ads-platform-rds"
+  description = "Allow PostgreSQL traffic"
+
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port = 5432
+    to_port   = 5432
+    protocol  = "tcp"
+
+    security_groups = [
+      aws_security_group.web.id
+    ]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ads-platform-rds-sg"
   }
 }
 resource "aws_db_instance" "postgres" {
